@@ -1,0 +1,455 @@
+﻿/*----------------------------------------------------------------
+--        SQL FOR SMART FOLKS: Intermediate Bootcamp            --
+------------------------------------------------------------------
+
+1. Pre-Work, Download PG-Admin 4 and get connected to the database
+		10:00 AM - 10:15 AM
+2. Review SQL KEYWORDS
+		10:15 AM - 10:30 AM
+3. Opening Activity - Review of Intro to SQL
+		10:30 AM - 11:15 AM
+
+<BREAK 1>
+		11:15 AM - 11:30 AM
+
+4. Case Statements
+		11:30 AM - 12:15 PM
+
+<LUNCH BREAK>
+		12:15 PM - 1:00 PM
+
+5. Windowing Functions (Ranking)
+		1:00 PM - 2:00 PM
+6. Having, Subqueries and CTEs
+		2:00 PM - 2:45 PM
+
+<BREAK 2>
+		2:45 PM - 2:55 PM
+
+7. Closing Activity - Review of Intermediate SQL
+		2:55 PM - 4:00 PM */
+
+
+----------------------------------------------------------------
+-- OPENING ACTIVITY: REVIEW OF INTRO TO SQL CONCEPTS - 30 Min. --
+----------------------------------------------------------------
+
+/* The governor of Iowa is trying to determine how many dollars
+were spent on over 100 proof alcohol products in Iowa during 2015 alone;
+particulary within counties that have a population count under 20,000 people.
+
+He'd like to understand these sales dollars by county and population size. Order
+the results by highest sales to lowest sales. 
+
+Can you write him a query to answer this question? Here are some hints:
+
+	TABLES and COLUMNS you will use
+		A. SALES
+			TOTAL - Total dollars spent by customer
+			COUNTY - Name of the county
+			DATE - Date the product was sold on
+			ITEM - Unique ID of the item
+			
+		B. COUNTIES
+			COUNTY - Name of the county
+			POPULATION - Population of the county
+		
+		C. PRODUCTS
+			ITEM_NO - Unique ID of the item
+			
+			
+	THINGS YOU'LL NEED TO DO
+		1. JOIN more than 2 tables together
+		2. Filter your data
+		3. Aggregate your data using SUM and the GROUP BY keyword.
+			
+			
+	STEPS to SOLVE
+		1. Draw a picture of the final result-output first
+		2. Build the shell for the query (i.e, placeholder names for columns)
+		3. Architect the JOINs & filters at the end. */		
+		
+	
+	SELECT
+
+	FROM
+	
+	WHERE
+	
+	GROUP BY
+	
+	ORDER BY
+
+----------------------------------------------------------------
+--     INSTRUCTOR GUIDED:   CASE STATEMENTS - 30 Min.         --
+----------------------------------------------------------------
+
+/* Allow you augment your table with a new column; a column based on a conditional statement*/
+	-- Similar to a IF THEN statement in Excel*/
+	
+	
+--Sytnax
+	/*	CASE WHEN condition THEN result
+     [WHEN ...]
+     [ELSE result]
+END; */
+
+--Example: Assigning COLOR_TYPES on the Color Wheel http://www.classicshades.com/articles/paint-color-wheel/
+ 
+-- 1. Let's filter on the primary colors (Red, Yellow, Blue)*/
+ 
+	SELECT * FROM COLORS WHERE COLOR IN ('Red','Yellow','Blue')
+ 
+-- 2. Let's filter on the secondary colors (Orange, Green, and Violet)
+ 
+	SELECT * FROM COLORS WHERE COLOR IN ()
+ 
+-- 3. Let's filter on primary and secondary at the same time. What happens?
+ 
+	SELECT * FROM COLORS WHERE COLOR () 
+	
+ --NOW LET's WRITE A CASE STATEMENT THAT CREATES A COLUMN THAT TELLS US:
+ 
+-- 1. IS_PRIMARY COLOR --> 1 or 0 */
+
+	SELECT
+	
+	FROM COLORS
+ 
+-- 2. IS_SECONDARY COLOR -> 1 or 0*/
+
+	SELECT
+	
+	FROM COLORS
+ 
+-- 3. IS_INTERMEDIATE COLOR --> 1 or 0*/
+
+	SELECT
+	
+	FROM COLORS
+ 
+-- 4 NOW, LET'S BLEND THEM ALL TOGETHER in ONE COLUMN called COLOR_TYPE*/
+
+	SELECT 
+	
+	FROM COLORS
+
+/*BLENDING CASE STATEMENTS AND AGGREGATES*/
+
+-- 1. Count the number of distinct primary colors in the table
+
+/*--------------        -------------
+	
+	TOTAL_COLORS		 IS_PRIMARY
+	
+	----------------    -------------
+	
+	      3				      1
+		  9                   0
+	
+	*/ 
+	
+	
+      SELECT 
+	  
+	  FROM COLORS
+	  
+-- 2. Count the number of distinct secondary colors in the table
+
+
+/*--------------        -------------
+	
+	TOTAL_COLORS		 IS_SECONDARY
+	
+	----------------    -------------
+	
+	      3				      1
+		  9                   0
+	
+	*/ 
+
+	SELECT
+
+	FROM COLORS
+	
+
+-- 3. Count the number of distinct primary, secondary and intermediate colors in the table - Instructor Led
+
+
+	/*--------------    -------------
+	
+	TOTAL_COLORS		 COLOR_TYPE
+	
+	----------------    -------------
+	
+	      3				   PRIMARY
+		  3                SECONDARY
+		  6				   INTERMEDIATE
+	*/
+	
+	SELECT
+	
+	FROM COLORS
+
+/* 4. NOW LET's SUM CRAYONS PRODUCED BY COLOR TYPE - Indepedent Practice */
+
+	/*--------------    -------------
+	
+	TOTAL_CRAYONS		  COLOR_TYPE
+	
+	----------------    -------------
+	
+	      1228			   PRIMARY
+		  2027             SECONDARY
+		  3033			   INTERMEDIATE
+	*/
+	
+	SELECT
+	
+	FROM COLORS
+	
+-- 5. Nesting CASE STATEMENTS INSIDE AGGREGATE FUNCTIONS (COUNT w/ Distinct) - Instructor Led
+
+    /*--------------        -------------           ---------------
+	
+	TOTAL_PRIMARY_COLORS  TOTAL_SECONDARY_COLORS    TOTAL_INTERMEDIATE_COLORS
+	
+	----------------        -------------           ---------------*/
+
+	      3                      3                         6
+		  
+	SELECT
+	
+	FROM COLORS
+	
+
+-- 6.Nesting CASE STATEMENTS inside AGGREGATE FUNCTIONS (SUM) - Indepedent Practice
+	
+ /*--------------           -------------           ---------------
+	
+PRIMARY_COLOR_CRAYONS  SECONDARY_COLOR_CRAYONS    INTERMEDIATE_COLOR_CRAYONS
+	
+	----------------        -------------           ---------------*/
+
+	      1228                   2027                   3033	
+		  
+	SELECT
+
+	FROM COLORS	
+		  
+	
+----------------------------------------------------------------
+--     INDEPENDENT PRACTICE:   CASE STATEMENTS - 15 Min.      --
+----------------------------------------------------------------
+	  
+
+/*COUNT the number of distinct products in the products table by proof band
+
+	PROOFS >= 100 - WASTED
+	BETWEEN 80 and 99 - VERY DRUNK
+	BETWEEN 50 and 79 - DRUNK
+	LESS THAN 50  - TIPSY ELSE END*/
+	
+
+--1. By creating the following table (Refer to Example 3 and 4 for guidance):
+
+	/*--------------    -------------
+	
+	 TOTAL_PRODUCTS		 PROOF_BAND
+	
+	----------------    -------------
+	
+	      4576			   VERY DRUNK
+		  2731             TIPSY
+		  2073			   DRUNK
+		   417			   WASTED */
+		   
+	SELECT
+
+	FROM
+
+
+--2. By pivoting the above table to this format (Refer to Example 5 and 6 for Guidance):
+
+
+	/*--------------    -------------      --------------    -------------
+	
+	 VERY_DRUNK_        DRUNK               TIPSY_PRODUCT    WASTED_PRODUCT
+	 PRODUCT_COUNT      PRODUCT_COUNT       COUNT		     COUNT
+	
+	----------------    -------------      --------------	 ------------*/ 
+	      4576             2073                2731               417
+		  
+	SELECT
+	
+	FROM
+
+		    
+----------------------------------------------------------------
+--  INSTRUCTOR GUIDED:   WINDOWING FUNCTIONS Ranking - 30 Min.--
+----------------------------------------------------------------
+
+
+-- 1. Albums Ranked by Plays
+	--No Granularity Change, No Partitions
+
+SELECT
+ALBUM
+,PLAYS
+--,RANK() OVER(ORDER BY PLAYS DESC) AS RANK
+--,ROW_NUMBER() OVER(ORDER BY PLAYS DESC) AS ROW_NUM
+--,DENSE_RANK() OVER(ORDER BY PLAYS DESC) AS DENSE_RANK
+--,SUM(PLAYS) OVER() AS TOTAL_PLAYS
+--,AVG(PLAYS OVER() AS AVG_PLAYS
+
+FROM ALBUMS_LITE
+
+ORDER BY PLAYS DESC
+
+-- 2. Artist Ranked by Plays
+	--Granularity Change, No Partitions
+
+-- 3. Albums Ranked Within Genre by Plays
+	--No Granularity Change, Has Partitions
+
+-- 4. Artists Ranked Within Genre By Plays
+	--Granularity Change, Has Partitions
+
+
+----------------------------------------------------------------
+--  INDEPENDENT PRACTICE: WINDOWING FUNCTIONS Ranking - 30 Min.--
+----------------------------------------------------------------
+
+
+-- 1. Write a query that creates the following output, using the SALES table 
+
+/* Hints 
+	Refer to Example 2 for guidance
+	Only Use columns COUNTY, TOTAL, and DATE.
+	Choose BETWEEN DENSE_RANK, ROW_NUMBER, or RANK*/
+	
+
+/*   --------------    -------------      -------------- 
+	
+	    COUNTY  	  TOTAL_SALES_2015 		Sales_Rank			      
+		 
+	----------------    -------------     --------------	 
+	     POLK             8657152               1
+		 LINN	          3529838               2
+		 SCOTT	          2843327               3
+		 N....             n......         n......	*/	  
+
+SELECT
+
+FROM SALES
+		 
+		 
+-- 2. Write a query that creates the following output, using the SALES table
+/* 
+
+ 
+    --------------       -------------      --------------    -------------
+	
+	     COUNTY			 CATEGORY_NAME		  TOTAL_SALES		Rank
+		 
+	----------------    -------------      --------------	 ------------ 
+	      Adair        CANADIAN WHISKIES        1117501            1
+		  Adair          80 PROOF VODKA		     82066             2
+		  ....		        ....					...			   ...
+		  Adams		    CANADIAN WHISKIES       25787.43		   1
+		  Adams	        WHISKEY LIQUEUR         171156             2    */
+ 
+
+SELECT
+
+FROM SALES
+ 
+ 
+----------------------------------------------------------------
+--  INSTRUCTOR GUIDED: HAVING, SUBQUERIES AND CTEs - 30 Min.  --
+----------------------------------------------------------------
+ 
+/*“I want to see a list of Rap Albums that are at least 60 minutes in length. 
+Which is about the amount of time it takes me to finish some flower.” – Dr. Dre*/
+ 
+ 
+ 
+--1a. We need to find out which albums are Rap
+	--1b. Write a query that lists all the albums that are Rap
+	
+	--QUERY_A
+	
+	SELECT
+	
+	FROM ALBUMS
+	 
+ 
+ 
+--2. We need to find out which albums are over 60 minutes
+	--2b. Write a query that lists all the albums that are at least 60 minutes.
+	
+	--QUERY_B
+	
+	SELECT
+	
+	FROM TRACKS
+	
+--3. Join those queries TOGETHER! Using either a: 
+
+
+	--A. SUBQUERY - query within a query example
+	
+	
+	
+	
+	
+	
+	--B. CTE - create two temporary tables
+	
+	
+	WITH QUERY_A AS (),
+	     QUERY_B AS ()
+	
+
+----------------------------------------------------------------
+--CLOSING ACTIVITY :      FINAL ASSESSMENT - 45 Min.          --
+----------------------------------------------------------------
+
+/*Write an indepedent query for each of the below*/
+
+	--QUERY_A. Total Sales by County and UNDER_20K_PEOPLE (BOOLEAN) in 2015 and 2014
+		-- Testing for Case Statements
+	
+	/*--------------    -------------   --------------    -------------
+	
+	    COUNTY  	  TOTAL_SALES_2015  TOTAL_SALES_2014  UNDER_20K_PEOPLE			      
+		 
+	----------------    -------------   --------------    -------------	
+	    EXAMPLE_A			34,000         22,000              TRUE      */
+		
+		SELECT
+		
+		FROM
+		
+		
+	
+	--QUERY_B. #1 Selling Product within Each County in 2015 *Hint, use the RANK function*
+		-- Testing for Windowing Functions (Which of the 4 use cases?)
+	
+	/*--------------    ---------------  --------------   -------------
+	
+	    COUNTY  	    Product_Name      Total_Sales  	   Product_Rank	      
+		 
+	----------------    -------------   --------------    --------------
+	EXAMPLE_A            PRODUCT_A          40,000				1
+	EXAMPLE_A			 PRODUCT_B			30,000				2
+	....				  ....				 ...				...
+	EXAMPLE_B			 PRODUCT_C			34,000				1
+    EXAMPLE_B			 PRODUCT_A			23,000              2	*/
+	
+	SELECT
+	
+	FROM
+	  
+	
+	--C. AFTER WRITING EACH QUERY, JOIN THEM ALL TOGETHER to Produce the table in the class handout
